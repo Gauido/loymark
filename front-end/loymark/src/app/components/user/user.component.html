@@ -1,0 +1,146 @@
+<div class="container mt-3">
+  <form [formGroup]="form" class="row g-3">
+    <div class="col-md-6">
+      <label for="name" class="form-label">Nombre</label>
+      <input
+        type="text"
+        class="form-control"
+        formControlName="name"
+        required
+        maxlength="25"
+      />
+    </div>
+
+    <div class="col-md-6">
+      <label for="last" class="form-label">Apellido</label>
+      <input
+        type="text"
+        class="form-control"
+        formControlName="last"
+        required
+        maxlength="25"
+      />
+    </div>
+
+    <div class="col-md-6">
+      <label for="email" class="form-label">Email</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        formControlName="email"
+        required
+        maxlength="30"
+      />
+    </div>
+
+    <div class="col-md-6">
+      <label for="phone" class="form-label">Teléfono</label>
+      <input
+        type="tel"
+        maxlength="25"
+        class="form-control"
+        formControlName="phone"
+      />
+    </div>
+
+    <div class="col-md-6">
+      <label for="birthDate" class="form-label">Fecha de nacimiento</label>
+      <input
+        type="date"
+        class="form-control"
+        formControlName="birthDate"
+        required
+      />
+    </div>
+
+    <div class="col-md-6 mt-5">
+      <div class="form-check">
+        <input
+          type="checkbox"
+          class="form-check-input"
+          formControlName="receiveInformation"
+        />
+        <label for="receiveInformation" class="form-check-label"
+          >Recibir información</label
+        >
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <label for="gender" class="form-label">Países</label>
+      <select
+        [(ngModel)]="selectedCountry"
+        class="form-select"
+        formControlName="country"
+      >
+        <option
+          *ngFor="let country of countries"
+          [value]="country.code"
+          [selected]="country.code === selectedCountry"
+        >
+          {{ country.label }}
+        </option>
+      </select>
+    </div>
+
+    <div class="col mt-5">
+      <button
+        type="submit"
+        (click)="onSubmit()"
+        class="btn btn-primary"
+        [disabled]="form.invalid"
+      >
+        {{ idSelected ? "Editar" : "Guardar" }}
+      </button>
+      <button class="btn btn-dark ml-2" (click)="resetForm()">Limpiar</button>
+    </div>
+  </form>
+
+  <p class="mt-5" *ngIf="userList?.length == 0">
+    No se encontraron registros aún
+  </p>
+  <table *ngIf="userList?.length > 0" class="table mt-2">
+    <thead>
+      <tr>
+        <th scope="col">Nombre</th>
+        <th scope="col">Apellido</th>
+        <th scope="col">Correo electrónico</th>
+        <th scope="col">Fecha de nacimiento</th>
+        <th scope="col">Teléfono</th>
+        <th scope="col">País de residencia</th>
+        <th scope="col">Desea recibir información</th>
+        <th scope="col">Opciones</th>
+      </tr>
+    </thead>
+    <tbody class="table-group-divider">
+      <tr *ngFor="let user of userList">
+        <td>{{ user.name }}</td>
+        <td>{{ user.lastName }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.birthDate | date : "yyyy/MM/dd" }}</td>
+        <td>{{ user.phone }}</td>
+        <td>{{ getCountryLabel(user.country) }}</td>
+        <td>{{ user.receiveInformation ? "SI" : "NO" }}</td>
+        <td>
+          <div class="dropdown">
+            <button
+              class="btn btn-secondary dropdown-toggle"
+              type="button"
+              id="dropdownMenuButton1"
+              data-bs-toggle="dropdown"
+            ></button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <li>
+                <a class="dropdown-item" (click)="update(user)">Actualizar</a>
+              </li>
+              <li>
+                <a class="dropdown-item" (click)="delete(user.id)">Borrar</a>
+              </li>
+            </ul>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

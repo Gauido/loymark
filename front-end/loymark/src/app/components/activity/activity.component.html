@@ -1,0 +1,21 @@
+<div class="container">
+  <p class="mt-5" *ngIf="taskList?.length == 0">
+    No se encontraron registros aún
+  </p>
+  <table *ngIf="taskList?.length > 0" class="table mt-2">
+    <thead>
+      <tr>
+        <th scope="col">Fecha</th>
+        <th scope="col">Tarea</th>
+        <th scope="col">Usuario</th>
+      </tr>
+    </thead>
+    <tbody class="table-group-divider">
+      <tr *ngFor="let task of taskList">
+        <td>{{ task.createDate | date : "yyyy/MM/dd" }}</td>
+        <td>{{ task.task }}</td>
+        <td>{{ task.user.lastName }} {{ task.user.name }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
